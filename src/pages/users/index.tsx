@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Checkbox,
+  Divider,
   Flex,
   Heading,
   Icon,
@@ -53,6 +54,8 @@ const UsersList: NextPage = () => {
               Create new
             </Button>
           </Flex>
+
+          <Divider marginY="24px" borderColor="gray.700" />
 
           <Table colorScheme="whiteAlpha">
             <Thead>
