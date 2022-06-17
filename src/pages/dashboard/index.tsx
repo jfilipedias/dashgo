@@ -3,8 +3,8 @@ import dynamic from 'next/dynamic'
 import { Box, Flex, SimpleGrid, Text, theme } from '@chakra-ui/react'
 import { ApexOptions } from 'apexcharts'
 
-import { Header } from '../components/Header'
-import { Sidebar } from '../components/Sidebar'
+import { Header } from '../../components/Header'
+import { Sidebar } from '../../components/Sidebar'
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
@@ -81,7 +81,7 @@ const Dashboard: NextPage = () => {
           minChildWidth="320px"
         >
           <Box
-            padding="32px"
+            padding={["24px", "32px"]}
             paddingBottom="16px"
             background="gray.800"
             borderRadius="8px"
@@ -91,7 +91,7 @@ const Dashboard: NextPage = () => {
           </Box>
 
           <Box
-            padding="32px"
+            padding={["24px", "32px"]}
             paddingBottom="16px"
             background="gray.800"
             borderRadius="8px"
