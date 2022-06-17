@@ -6,9 +6,9 @@ import { HStack, Icon } from '@chakra-ui/react'
 const NotificationsNav: React.FC = () => {
   return (
     <HStack
-      spacing="32px"
-      marginX="32px"
-      paddingRight="32px"
+      spacing={['24px', '32px']}
+      marginX={['24px', '32px']}
+      paddingRight={['24px', '32px']}
       paddingY="4px"
       color="gray.300"
       borderRightWidth="1px"
