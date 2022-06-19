@@ -29,18 +29,23 @@ const CreateUser: NextPage = () => {
       >
         <Sidebar />
 
-        <Box flex="1" borderRadius="8px" background="gray.800" padding="32px">
+        <Box
+          flex="1"
+          borderRadius="8px"
+          background="gray.800"
+          padding={['24px', '32px']}
+        >
           <Heading size="lg" fontWeight="normal">Create user</Heading>
 
           <Divider marginY="24px" borderColor="gray.700" />
 
           <Stack spacing="32px">
-            <SimpleGrid spacing="32px" width="100%" minChildWidth="240px">
+            <SimpleGrid spacing={['24px', '32px']} width="100%" minChildWidth="240px">
               <Input name="name" label="Full name" />
               <Input name="email" label="E-mail" type="email" />
             </SimpleGrid>
 
-            <SimpleGrid spacing="32px" width="100%" minChildWidth="240px">
+            <SimpleGrid spacing={['24px', '32px']} width="100%" minChildWidth="240px">
               <Input name="password" label="Password" type="password" />
               <Input name="passwordConfirmation" label="Password confirmation" type="password" />
             </SimpleGrid>
