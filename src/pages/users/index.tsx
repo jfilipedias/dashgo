@@ -15,7 +15,8 @@ import {
   Text,
   Th,
   Thead,
-  Tr
+  Tr,
+  useBreakpointValue
 } from '@chakra-ui/react'
 
 import { Header } from '../../components/Header';
@@ -23,6 +24,11 @@ import { Sidebar } from '../../components/Sidebar';
 import { Pagination } from '../../components/Pagination';
 
 const UsersList: NextPage = () => {
+  const isWideVersion = useBreakpointValue({
+    base: false,
+    lg: true
+  })
+
   return (
     <Box>
       <Header />
@@ -60,17 +66,13 @@ const UsersList: NextPage = () => {
           <Table colorScheme="whiteAlpha">
             <Thead>
               <Tr>
-                <Th width="32px" paddingX="24px" color="gray.300" >
+                <Th width="32px" paddingX={['16px', '16px', '24px']} color="gray.300" >
                   <Checkbox colorScheme="pink"></Checkbox>
                 </Th>
 
-                <Th>
-                  User
-                </Th>
+                <Th>User</Th>
 
-                <Th>
-                  Register Date
-                </Th>
+                {isWideVersion && <Th>Register Date</Th>}
 
                 <Th width="24"></Th>
               </Tr>
@@ -78,7 +80,7 @@ const UsersList: NextPage = () => {
 
             <Tbody>
               <Tr>
-                <Td paddingX="24px">
+                <Td paddingX={['16px', '16px', '24px']}>
                   <Checkbox colorScheme="pink"></Checkbox>
                 </Td>
 
@@ -91,25 +93,25 @@ const UsersList: NextPage = () => {
                   </Box>
                 </Td>
 
-                <Td>
-                  April 4, 2022
-                </Td>
+                {isWideVersion && <Td>April 4, 2022</Td>}
 
                 <Td>
-                  <Button
-                    as="a"
-                    size="sm"
-                    fontSize="sm"
-                    colorScheme="purple"
-                    leftIcon={<Icon as={RiPencilLine} fontSize="md" />}
-                  >
-                    Edit
-                  </Button>
+                  {isWideVersion && (
+                    <Button
+                      as="a"
+                      size="sm"
+                      fontSize="sm"
+                      colorScheme="purple"
+                      leftIcon={<Icon as={RiPencilLine} fontSize="md" />}
+                    >
+                      Edit
+                    </Button>
+                  )}
                 </Td>
               </Tr>
 
               <Tr>
-                <Td paddingX="24px">
+                <Td paddingX={['16px', '16px', '24px']}>
                   <Checkbox colorScheme="pink"></Checkbox>
                 </Td>
 
@@ -122,25 +124,25 @@ const UsersList: NextPage = () => {
                   </Box>
                 </Td>
 
-                <Td>
-                  April 4, 2022
-                </Td>
+                {isWideVersion && <Td>April 4, 2022</Td>}
 
                 <Td>
-                  <Button
-                    as="a"
-                    size="sm"
-                    fontSize="sm"
-                    colorScheme="purple"
-                    leftIcon={<Icon as={RiPencilLine} fontSize="md" />}
-                  >
-                    Edit
-                  </Button>
+                  {isWideVersion && (
+                    <Button
+                      as="a"
+                      size="sm"
+                      fontSize="sm"
+                      colorScheme="purple"
+                      leftIcon={<Icon as={RiPencilLine} fontSize="md" />}
+                    >
+                      Edit
+                    </Button>
+                  )}
                 </Td>
               </Tr>
 
               <Tr>
-                <Td paddingX="24px">
+                <Td paddingX={['16px', '16px', '24px']}>
                   <Checkbox colorScheme="pink"></Checkbox>
                 </Td>
 
@@ -153,20 +155,20 @@ const UsersList: NextPage = () => {
                   </Box>
                 </Td>
 
-                <Td>
-                  April 4, 2022
-                </Td>
+                {isWideVersion && <Td>April 4, 2022</Td>}
 
                 <Td>
-                  <Button
-                    as="a"
-                    size="sm"
-                    fontSize="sm"
-                    colorScheme="purple"
-                    leftIcon={<Icon as={RiPencilLine} fontSize="md" />}
-                  >
-                    Edit
-                  </Button>
+                  {isWideVersion && (
+                    <Button
+                      as="a"
+                      size="sm"
+                      fontSize="sm"
+                      colorScheme="purple"
+                      leftIcon={<Icon as={RiPencilLine} fontSize="md" />}
+                    >
+                      Edit
+                    </Button>
+                  )}
                 </Td>
               </Tr>
             </Tbody>
@@ -174,8 +176,8 @@ const UsersList: NextPage = () => {
 
           <Pagination />
         </Box>
-      </Flex>
-    </Box>
+      </Flex >
+    </Box >
   )
 }
 

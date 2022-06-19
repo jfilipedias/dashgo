@@ -8,7 +8,7 @@ export const Pagination: React.FC = () => {
   return (
     <Stack
       spacing="24px"
-      direction="row"
+      direction={['column', 'row']}
       alignItems="center"
       justifyContent="space-between"
       marginTop="32px"
