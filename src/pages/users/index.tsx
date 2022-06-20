@@ -1,4 +1,5 @@
 import { NextPage } from 'next'
+import Link from 'next/link';
 import { RiAddLine, RiPencilLine } from 'react-icons/ri';
 
 import {
@@ -50,15 +51,17 @@ const UsersList: NextPage = () => {
           >
             <Heading size="lg" fontWeight="normal">Users</Heading>
 
-            <Button
-              as="a"
-              size="sm"
-              fontSize="sm"
-              colorScheme="pink"
-              leftIcon={<Icon as={RiAddLine} fontSize="xl" />}
-            >
-              Create new
-            </Button>
+            <Link href="/users/create" passHref>
+              <Button
+                as="a"
+                size="sm"
+                fontSize="sm"
+                colorScheme="pink"
+                leftIcon={<Icon as={RiAddLine} fontSize="xl" />}
+              >
+                Create new
+              </Button>
+            </Link>
           </Flex>
 
           <Divider marginY="24px" borderColor="gray.700" />

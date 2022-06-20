@@ -14,6 +14,7 @@ import {
 import { Header } from '../../../components/Header';
 import { Sidebar } from '../../../components/Sidebar';
 import { Input } from '../../../components/Form/Input';
+import Link from 'next/link';
 
 const CreateUser: NextPage = () => {
   return (
@@ -53,7 +54,9 @@ const CreateUser: NextPage = () => {
 
           <Flex marginTop="32px" justifyContent="flex-end">
             <HStack spacing="16px">
-              <Button colorScheme="whiteAlpha">Cancel</Button>
+              <Link href="/users" passHref>
+                <Button as="a" colorScheme="whiteAlpha">Cancel</Button>
+              </Link>
               <Button colorScheme="pink">Save</Button>
             </HStack>
           </Flex>
