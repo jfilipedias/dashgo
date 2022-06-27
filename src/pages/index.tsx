@@ -1,21 +1,31 @@
-import type { NextPage } from 'next'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import type { NextPage } from "next";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import * as yup from "yup";
 
-import { Button, Flex, Stack } from '@chakra-ui/react'
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Button, Flex, Stack } from "@chakra-ui/react";
 
-import { Input } from '../components/Form/Input'
+import { Input } from "../components/Form/Input";
 
 type SignInFormData = {
-  email: string
-  password: string
-}
+  email: string;
+  password: string;
+};
 
 const SignIn: NextPage = () => {
-  const { register, handleSubmit, formState } = useForm()
+  const signInFormSchema = yup.object().shape({
+    email: yup.string().required().email(),
+    password: yup.string().required(),
+  });
+
+  const { register, handleSubmit, formState } = useForm({
+    resolver: yupResolver(signInFormSchema),
+  });
+  const { errors } = formState;
 
   const handleSignIn: SubmitHandler<FieldValues> = (value) => {
-    console.log(value)
-  }
+    console.log(value);
+  };
 
   return (
     <Flex
@@ -38,12 +48,14 @@ const SignIn: NextPage = () => {
           <Input
             label="E-mail"
             type="email"
-            {...register('email')}
+            error={errors.email}
+            {...register("email")}
           />
           <Input
             label="Password"
             type="password"
-            {...register('passwod')}
+            error={errors.password}
+            {...register("passwod")}
           />
         </Stack>
 
@@ -58,7 +70,7 @@ const SignIn: NextPage = () => {
         </Button>
       </Flex>
     </Flex>
-  )
-}
+  );
+};
 
-export default SignIn
+export default SignIn;
