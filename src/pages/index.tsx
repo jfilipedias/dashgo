@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,23 +7,27 @@ import { Button, Flex, Stack } from "@chakra-ui/react";
 
 import { Input } from "../components/Form/Input";
 
-type SignInFormData = {
+interface SignInFormInputs {
   email: string;
   password: string;
-};
+}
+
+const signInFormSchema = yup.object().shape({
+  email: yup
+    .string()
+    .required("Email is required")
+    .email("Email must be a valid email"),
+  password: yup.string().required("Password is required"),
+});
 
 const SignIn: NextPage = () => {
-  const signInFormSchema = yup.object().shape({
-    email: yup.string().required().email(),
-    password: yup.string().required(),
-  });
-
-  const { register, handleSubmit, formState } = useForm({
+  const { register, handleSubmit, formState } = useForm<SignInFormInputs>({
     resolver: yupResolver(signInFormSchema),
   });
+
   const { errors } = formState;
 
-  const handleSignIn: SubmitHandler<FieldValues> = (value) => {
+  const handleSignIn: SubmitHandler<SignInFormInputs> = (value) => {
     console.log(value);
   };
 
@@ -55,7 +59,7 @@ const SignIn: NextPage = () => {
             label="Password"
             type="password"
             error={errors.password}
-            {...register("passwod")}
+            {...register("password")}
           />
         </Stack>
 
