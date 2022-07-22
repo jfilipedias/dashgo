@@ -25,26 +25,29 @@ import {
 import { Header } from "../../components/Header";
 import { Sidebar } from "../../components/Sidebar";
 import { Pagination } from "../../components/Pagination";
+import { api } from "../../services/api";
 
 const UsersList: NextPage = () => {
-  const { data, isLoading, error } = useQuery(["users"], async () => {
-    const response = await fetch("http://localhost:3000/api/users");
-    const data = await response.json();
+  const { data, isLoading, isFetching, error } = useQuery(
+    ["users"],
+    async () => {
+      const { data } = await api.get("/users");
 
-    const users = data.users.map((user) => {
-      return {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        createdAt: new Date(user.createdAt).toLocaleDateString("en", {
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
-        }),
-      };
-    });
-    return users;
-  });
+      const users = data.users.map((user) => {
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          createdAt: new Date(user.createdAt).toLocaleDateString("en", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+          }),
+        };
+      });
+      return users;
+    }
+  );
 
   const handleTable = () => {
     if (isLoading) return <Spinner />;
@@ -74,6 +77,9 @@ const UsersList: NextPage = () => {
           >
             <Heading size="lg" fontWeight="normal">
               Users
+              {!isLoading && isFetching && (
+                <Spinner size="sm" color="gray.500" marginLeft="16px" />
+              )}
             </Heading>
 
             <Link href="/users/create" passHref>
@@ -91,7 +97,12 @@ const UsersList: NextPage = () => {
 
           <Divider marginY="24px" borderColor="gray.700" />
 
-          <Flex direction="column" justifyContent="center" width="100%">
+          <Flex
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            width="100%"
+          >
             {handleTable()}
           </Flex>
         </Box>
