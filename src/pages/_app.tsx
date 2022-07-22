@@ -1,8 +1,13 @@
-import type { AppProps } from 'next/app'
-import { ChakraProvider } from '@chakra-ui/react'
+import type { AppProps } from "next/app";
+import { ChakraProvider } from "@chakra-ui/react";
 
-import { theme } from '../styles/theme'
-import { SidebarDrawerProvider } from '../contexts/sidebarDrawerContext'
+import { theme } from "../styles/theme";
+import { SidebarDrawerProvider } from "../contexts/sidebarDrawerContext";
+import { makeServer } from "../services/mirage";
+
+if (process.env.NODE_ENV === "development") {
+  makeServer();
+}
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -11,7 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </SidebarDrawerProvider>
     </ChakraProvider>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;
