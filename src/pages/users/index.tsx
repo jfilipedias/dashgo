@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import { NextPage } from "next";
 import Link from "next/link";
@@ -24,16 +25,30 @@ import {
 import { Header } from "../../components/Header";
 import { Sidebar } from "../../components/Sidebar";
 import { Pagination } from "../../components/Pagination";
-import { useUsers } from "../../services/hooks/useUsers";
+import { GetUsersResponse, useUsers } from "../../services/hooks/useUsers";
+
+interface TableProps {
+  data: GetUsersResponse;
+  currentPage: number;
+  onPageChange: (page: number) => void;
+}
 
 const UsersList: NextPage = () => {
-  const { data, isLoading, isFetching, error } = useUsers();
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data, isLoading, isFetching, error } = useUsers(currentPage);
 
   const handleTable = () => {
     if (isLoading) return <Spinner />;
+
     if (error) return <Text>Was not possible to load the user data</Text>;
 
-    return <Table data={data} />;
+    return (
+      <Table
+        data={data}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      />
+    );
   };
 
   return (
@@ -91,7 +106,7 @@ const UsersList: NextPage = () => {
   );
 };
 
-const Table = ({ data }) => {
+const Table: React.FC<TableProps> = ({ data, currentPage, onPageChange }) => {
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
@@ -119,7 +134,7 @@ const Table = ({ data }) => {
         </Thead>
 
         <Tbody>
-          {data.map((user) => {
+          {data.users.map((user) => {
             return (
               <Tr key={user.id}>
                 <Td paddingX={["16px", "16px", "24px"]}>
@@ -156,7 +171,11 @@ const Table = ({ data }) => {
         </Tbody>
       </ChakraTable>
 
-      <Pagination />
+      <Pagination
+        totalCountOfRegisters={data.totalCount}
+        currentPage={currentPage}
+        onPageChange={onPageChange}
+      />
     </>
   );
 };
