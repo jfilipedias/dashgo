@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import { NextPage } from "next";
-import Link from "next/link";
+import NextLink from "next/link";
 
 import {
   Box,
@@ -11,6 +11,7 @@ import {
   Flex,
   Heading,
   Icon,
+  Link,
   Spinner,
   Table as ChakraTable,
   Tbody,
@@ -26,12 +27,16 @@ import { Header } from "../../components/Header";
 import { Sidebar } from "../../components/Sidebar";
 import { Pagination } from "../../components/Pagination";
 import { GetUsersResponse, useUsers } from "../../services/hooks/useUsers";
+import { queryClient } from "../../services/queryCliente";
+import { api } from "../../services/api";
 
 interface TableProps {
   data: GetUsersResponse;
   currentPage: number;
   onPageChange: (page: number) => void;
 }
+
+const MILLISECONDS_TO_SECONDS = 1000;
 
 const UsersList: NextPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -77,7 +82,7 @@ const UsersList: NextPage = () => {
               )}
             </Heading>
 
-            <Link href="/users/create" passHref>
+            <NextLink href="/users/create" passHref>
               <Button
                 as="a"
                 size="sm"
@@ -87,7 +92,7 @@ const UsersList: NextPage = () => {
               >
                 Create new
               </Button>
-            </Link>
+            </NextLink>
           </Flex>
 
           <Divider marginY="24px" borderColor="gray.700" />
@@ -111,6 +116,20 @@ const Table: React.FC<TableProps> = ({ data, currentPage, onPageChange }) => {
     base: false,
     lg: true,
   });
+
+  const handlePrefetchUser = async (userId: string) => {
+    await queryClient.prefetchQuery(
+      ["users", userId],
+      async () => {
+        const response = await api.get(`/users/${userId}`);
+
+        return response.data;
+      },
+      {
+        staleTime: MILLISECONDS_TO_SECONDS * 10,
+      }
+    );
+  };
 
   return (
     <>
@@ -143,7 +162,12 @@ const Table: React.FC<TableProps> = ({ data, currentPage, onPageChange }) => {
 
                 <Td>
                   <Box>
-                    <Text fontWeight="bold">{user.name}</Text>
+                    <Link
+                      color="purple.400"
+                      onMouseEnter={() => handlePrefetchUser(user.id)}
+                    >
+                      <Text fontWeight="bold">{user.name}</Text>
+                    </Link>
                     <Text fontSize="sm" color="gray.300">
                       {user.email}
                     </Text>
