@@ -27,7 +27,7 @@ import { Header } from "../../components/Header";
 import { Sidebar } from "../../components/Sidebar";
 import { Pagination } from "../../components/Pagination";
 import { GetUsersResponse, useUsers } from "../../services/hooks/useUsers";
-import { queryClient } from "../../services/queryCliente";
+import { queryClient } from "../../services/queryClient";
 import { api } from "../../services/api";
 
 interface TableProps {
@@ -37,6 +37,7 @@ interface TableProps {
 }
 
 const MILLISECONDS_TO_SECONDS = 1000;
+const SECONDS_TO_MINUTES = 60;
 
 const UsersList: NextPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -126,7 +127,7 @@ const Table: React.FC<TableProps> = ({ data, currentPage, onPageChange }) => {
         return response.data;
       },
       {
-        staleTime: MILLISECONDS_TO_SECONDS * 10,
+        staleTime: MILLISECONDS_TO_SECONDS * SECONDS_TO_MINUTES * 1,
       }
     );
   };
