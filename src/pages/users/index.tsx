@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import NextLink from "next/link";
 
 import {
@@ -26,7 +26,11 @@ import {
 import { Header } from "../../components/Header";
 import { Sidebar } from "../../components/Sidebar";
 import { Pagination } from "../../components/Pagination";
-import { GetUsersResponse, useUsers } from "../../services/hooks/useUsers";
+import {
+  getUsers,
+  GetUsersResponse,
+  useUsers,
+} from "../../services/hooks/useUsers";
 import { queryClient } from "../../services/queryClient";
 import { api } from "../../services/api";
 
@@ -39,9 +43,11 @@ interface TableProps {
 const MILLISECONDS_TO_SECONDS = 1000;
 const SECONDS_TO_MINUTES = 60;
 
-const UsersList: NextPage = () => {
+const UsersList: NextPage = ({ users }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, isLoading, isFetching, error } = useUsers(currentPage);
+  const { data, isLoading, isFetching, error } = useUsers(currentPage, {
+    initialData: users,
+  });
 
   const handleTable = () => {
     if (isLoading) return <Spinner />;
@@ -203,6 +209,16 @@ const Table: React.FC<TableProps> = ({ data, currentPage, onPageChange }) => {
       />
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const { users, totalCount } = await getUsers(1);
+
+  return {
+    props: {
+      users,
+    },
+  };
 };
 
 export default UsersList;

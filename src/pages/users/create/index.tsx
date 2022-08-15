@@ -1,9 +1,8 @@
 import { NextPage } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
-import * as yup from "yup";
 
-import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Box,
   Button,
@@ -14,10 +13,16 @@ import {
   SimpleGrid,
   Stack,
 } from "@chakra-ui/react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
+
+import * as yup from "yup";
 
 import { Header } from "../../../components/Header";
 import { Sidebar } from "../../../components/Sidebar";
 import { Input } from "../../../components/Form/Input";
+import { api } from "../../../services/api";
+import { queryClient } from "../../../services/queryClient";
 
 interface CreateUserFormInputs {
   email: string;
@@ -41,15 +46,37 @@ const createUserFormSchema = yup.object().shape({
     .oneOf([null, yup.ref("password")], "The passwords must match"),
 });
 
+const postUsers = async (user: CreateUserFormInputs) => {
+  const response = await api.post("users", {
+    user: {
+      ...user,
+      created_at: new Date(),
+    },
+  });
+
+  return response.data.user;
+};
+
 const CreateUser: NextPage = () => {
+  const router = useRouter();
+
+  const createUserMutation = useMutation(postUsers, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["users"]);
+    },
+  });
+
   const { register, handleSubmit, formState } = useForm<CreateUserFormInputs>({
     resolver: yupResolver(createUserFormSchema),
   });
 
   const { errors } = formState;
 
-  const handleCreateUser: SubmitHandler<CreateUserFormInputs> = (values) => {
-    console.log(values);
+  const handleCreateUser: SubmitHandler<CreateUserFormInputs> = async (
+    values: CreateUserFormInputs
+  ) => {
+    await createUserMutation.mutateAsync(values);
+    router.push("/users");
   };
 
   return (

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 import { api } from "../api";
 
@@ -41,8 +41,9 @@ export const getUsers = async (page: number): Promise<GetUsersResponse> => {
   return { users, totalCount };
 };
 
-export const useUsers = (page: number) => {
+export const useUsers = (page: number, options: UseQueryOptions) => {
   return useQuery(["users", page], () => getUsers(page), {
     staleTime: MILLISECONDS_TO_SECONDS * 5,
+    ...options,
   });
 };
